@@ -1,0 +1,30 @@
+from pathlib import Path #importing Path from pathlib
+
+p = Path('C:\\Users\\ST Tangirala\\Python\\test\\') #Creating a Path 
+n = input("Enter a letter: ") #creating an input 
+
+if n == 'D': #Checking what directories are available in the filelist
+    filelist = [] #Creating a file list
+    for i in (p.iterdir()): #creating a variable and iterating through for loop
+       if i.is_dir(): #checking conditional of whether i is in directory
+           print (i) #If yes, print the directory
+           filelist.append(i) #Add the value inside the filelist 
+       elif i.is_file(): #You check if file exists 
+           print (i, "is a file") #prints the statement if i is file along with the string 
+    
+    y = input("Enter a set: ") #creating another input with a value and a set
+    listofinput = (y.split()) #you're trying to split the input into a list 
+    if listofinput[0] == 'C': #if the input you placed equals the input you placed in
+        for x in (filelist): #you iterate through the filelist 
+            print(x) #you print the values inside. 
+    elif listofinput[0] == 'N': # if the input you placed in is equivalent to this input along with the file or directory names 
+        for i in (filelist): #you're iterating through the filelist 
+            for j in (listofinput[1:]): #you're also iterating through the input list
+                if i.stem == j: #if the value of the stem is equivalent to j 
+                    print(i) # print i 
+
+
+    
+
+    
+    

@@ -1,0 +1,105 @@
+db = {'Alan': {'Barb': [10, 20], 'Carl': [10, 10]},
+      'Barb': {'Alan': [10, 10], 'Deja': [5, 5, 5]},
+      'Carl': {'Alan': [10, 5], 'Deja': [15], 'Elan': [5, 5]},
+      'Deja': {'Elan': [5]},
+      'Elan': {'Carl': [10]}}
+
+def all_parties(db): 
+    total_parties = set() 
+    for caller, caller_dict in db.items(): 
+        for receiver, receiver_min in caller_dict.items(): 
+            total_parties.add(caller)
+            total_parties.add(receiver)
+    
+    return(total_parties)
+
+
+def read_db(): 
+    frequency = {}
+    with open ('C:\\Users\\ST Tangirala\\Python\\test\\fileLinkedList\\phone_db.txt', 'r') as t: 
+        phone_lines = t.readlines()
+    
+    for line in phone_lines: 
+        new_phone = line.split(":")
+        new_caller = new_phone[0]
+        new_receiver = new_phone[1]
+        new_caller_min = new_phone[2:]
+    
+        min_list = []
+        for min in new_caller_min: 
+            min_list.append(int(min))
+        if new_caller not in frequency: 
+            frequency[new_caller] = {}
+        frequency[new_caller][new_receiver] = min_list
+
+        
+    return frequency
+
+
+def talker_frequency(): 
+    frequency = {}
+    
+    for caller, caller_dict in db.items(): 
+        if caller not in frequency: 
+           frequency[caller] = 0
+
+        
+        for receiver, receiver_min in caller_dict.items(): 
+            if receiver not in frequency: 
+                frequency[receiver] = 0
+            frequency[caller] += len(receiver_min)
+            frequency[receiver] += len(receiver_min)
+    return frequency
+
+
+
+
+  
+def initiators(db): 
+    initiator = {}
+
+    for caller, caller_dict in db.items(): 
+        if caller not in initiator: 
+            initiator[caller] = {'calls made': 0, 'calls received': 0}            
+        for receiver, receiver_min in caller_dict.items():
+            if receiver not in initiator: 
+                initiator[receiver] = {'calls made': 0, 'calls received': 0}
+
+            initiator[caller]['calls made'] += len(receiver_min)
+            initiator[receiver]['calls received'] += len(receiver_min)
+       
+    
+    return initiator
+
+
+
+
+
+def mutual_callers(db): 
+    mutual = set()
+    initiator = {}
+    for caller, caller_dict in db.items(): 
+        for receiver, receiver_min in caller_dict.items():
+            if caller not in initiator: 
+                initiator[caller] = 0
+        for receiver, receiver_min in caller_dict.items():
+            if receiver not in initiator: 
+                initiator[receiver] = 0
+
+                initiator[caller] += len(receiver_min)
+                initiator[receiver] += len(receiver_min) 
+            
+            New_Tuple = ()
+            if initiator[caller] and initiator[receiver] > 2: 
+                New_Tuple = (caller, receiver)
+                mutual.add(New_Tuple)
+    return mutual
+
+
+
+if __name__ == '__main__': 
+    # print(talker_frequency())
+    print(initiators(db))
+    #print(mutual_callers(db))
+    # print(read_db())
+    # print(all_parties(db))
